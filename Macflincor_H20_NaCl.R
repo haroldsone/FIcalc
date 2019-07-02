@@ -2,8 +2,6 @@ library("tidyverse")
 library("readxl")
 library("magrittr")
 
-#Need to address (figure out) how to be selective. The If, and For loops are only using one option or the other.
-
 #read the data table into info
 info <- read_excel("data-raw/FIdata.xlsx",
                    range = cell_cols("A:D")) # import all records in columns A to C
