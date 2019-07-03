@@ -96,3 +96,23 @@ info["Pcrit"] <- 2094 - 20.56*info[9] + 0.06896*info[9]^2 - 0.00008903*info[9]^3
 
 rm(T, tr)
 
+#calculate and isochore using Bodnar and Vityk (1994)
+Th <- as.numeric(unlist(info[3]))
+S <- as.numeric(unlist(info[5]))
+as <- as.numeric(unlist(18.28 + 1.4413 * S + 0.0047241 * S^2 - 0.0024213 * S^3 + 0.000038064 * S^4))
+bs <- as.numeric(unlist( 0.019041 - 0.015268 * S + 0.000566012 * S^2 - 0.0000042329 * S^3 - 0.000000030354 * S^4))
+cs <- as.numeric(unlist( -0.00015988 + 0.000036892 * S - 0.0000019473 * S^2 + 0.000000041674 * S^3 - 0.00000000033008 * S^4))
+
+info["dpdt"] <- as.numeric(unlist(as + bs * Th + cs * Th^2))
+PatTh <- as.numeric(unlist(info[8]))
+dpdt <- as.numeric(unlist(info[9]))
+rm(S, as, bs, cs)
+
+#plot isochore using the geom_segment in ggplot2
+
+y2 <- as.numeric(unlist((dpdt * (1000 - Th) + PatTh)))
+x2 <- as.numeric(unlist(1000))
+ggplot() + 
+  geom_segment(data=info, mapping=aes(x=Th, y=PatTh, xend=x2, yend=y2), size=0.1, color="red") 
+
+rm(dpdt, PatTh, Th, x2, y2)
